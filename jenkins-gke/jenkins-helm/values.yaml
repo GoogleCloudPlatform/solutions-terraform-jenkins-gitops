@@ -1,0 +1,160 @@
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+master:
+  containerEnv:
+    - name: PROJECT_ID
+      valueFrom:
+        secretKeyRef:
+            name: jenkins-k8s-config
+            key: project_id
+    - name: GITHUB_REPO
+      valueFrom:
+        secretKeyRef:
+            name: github-secrets
+            key: github_repo
+    - name: GITHUB_USERNAME
+      valueFrom:
+        secretKeyRef:
+            name: github-secrets
+            key: github_username
+    - name: GITHUB_TOKEN
+      valueFrom:
+        secretKeyRef:
+            name: github-secrets
+            key: github_token
+    - name: jenkins_tf_ksa
+      valueFrom:
+        secretKeyRef:
+            name: jenkins-k8s-config
+            key: jenkins_tf_ksa
+  servicePort: 80
+  serviceType: LoadBalancer
+  installPlugins:
+    - kubernetes:1.21.4
+    - workflow-job:2.36
+    - workflow-aggregator:2.6
+    - credentials-binding:1.20
+    - git:4.0.0
+    - blueocean:1.21.0
+    - docker-custom-build-environment:1.7.3
+    - credentials:2.3.0
+    - docker-commons:1.15
+    - docker-workflow:1.21
+    - job-dsl:1.76
+    - matrix-auth:2.5
+  JCasC:
+    enabled: true
+    pluginVersion: "1.35"
+    configScripts:
+        cloud: |
+            jenkins:
+                clouds:
+                    - kubernetes:
+                        name: "gke-executors"
+                        serverUrl: "https://kubernetes.default"
+                        jenkinsTunnel: "jenkins-agent:50000"
+                        jenkinsUrl: "http://jenkins:80"
+                        skipTlsVerify: true
+                        namespace: "default"
+                        templates:
+                            - name: "jenkins-jnlp"
+                              namespace: "default"
+                              nodeUsageMode: NORMAL
+                              label: "jnlp-exec"
+                              containers:
+                                - name: "jnlp"
+                                  image: "jenkinsci/jnlp-slave"
+                                  alwaysPullImage: false
+                                  workingDir: "/home/jenkins/agent"
+                                  ttyEnabled: true
+                                  command: ""
+                                  args: ""
+                                  resourceRequestCpu: "500m"
+                                  resourceLimitCpu: "1000m"
+                                  resourceRequestMemory: "1Gi"
+                                  resourceLimitMemory: "2Gi"
+                              volumes:
+                                - emptyDirVolume:
+                                    memory: false
+                                    mountPath: "/tmp"
+                              idleMinutes: "1"
+                              activeDeadlineSeconds: "120"
+                              slaveConnectTimeout: "1000"
+                            - name: "terraform"
+                              namespace: "default"
+                              nodeUsageMode: NORMAL
+                              serviceAccount: ${jenkins_tf_ksa}
+                              label: "terraform-exec"
+                              containers:
+                                - name: "terraform"
+                                  image: "hashicorp/terraform:light"
+                                  alwaysPullImage: false
+                                  workingDir: "/home/jenkins/agent"
+                                  ttyEnabled: true
+                                  command: "/bin/sh -c"
+                                  args: "cat"
+                                  resourceRequestCpu: "100m"
+                                  resourceLimitCpu: "500m"
+                                  resourceRequestMemory: "500Mi"
+                                  resourceLimitMemory: "1Gi"
+                              volumes:
+                                - emptyDirVolume:
+                                    memory: false
+                                    mountPath: "/tmp"
+                              idleMinutes: "1"
+                              podRetention: "never"
+                              activeDeadlineSeconds: "240"
+                              slaveConnectTimeout: "1000"
+        credentials: |
+            credentials:
+                system:
+                    domainCredentials:
+                    - credentials:
+                        - usernamePassword:
+                            scope: GLOBAL
+                            id: "github-token"
+                            username: ${GITHUB_USERNAME}
+                            password: ${GITHUB_TOKEN}
+                            description: "Github personal token"
+        init-jobs: |
+            jobs:
+              - script: >
+                    multibranchPipelineJob('terraform-jenkins-create-demo') {
+                        factory {
+                        workflowBranchProjectFactory {
+                            scriptPath('example-pipelines/example-create/Jenkinsfile')
+                        }
+                        }
+                        branchSources {
+                        github {
+                            id('12312313')
+                            scanCredentialsId('github-token')
+                            repoOwner("${GITHUB_USERNAME}")
+                            repository("${GITHUB_REPO}")
+                            buildOriginBranchWithPR(false)
+                            buildOriginBranch(true)
+                            buildOriginPRMerge(true)
+                            buildForkPRMerge(true)
+                        }
+                        }
+                        orphanedItemStrategy {
+                        discardOldItems {
+                            numToKeep(10)
+                        }
+                        }
+                        triggers {
+                        periodic(1)
+                        }
+                    }
