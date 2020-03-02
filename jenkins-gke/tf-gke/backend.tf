@@ -16,7 +16,7 @@
 
 terraform {
   backend "gcs" {
-    bucket = "TFSTATE_GCS_BACKEND"
+    bucket = "test-j-tf-tfstate"
     prefix = "jenkins"
   }
 }
