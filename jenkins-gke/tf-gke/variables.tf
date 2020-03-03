@@ -23,11 +23,6 @@ variable "tfstate_gcs_backend" {
   default     = "TFSTATE_GCS_BACKEND"
 }
 
-variable "restart_policy" {
-  description = "The desired Docker restart policy for the deployed image"
-  default     = "Always"
-}
-
 variable "region" {
   description = "The GCP region to deploy instances into"
   default     = "us-east4"
@@ -59,11 +54,6 @@ variable "subnet_ip" {
 variable "subnet_name" {
   description = "Name for the subnet"
   default     = "jenkins-subnet"
-}
-
-variable "jenkins_project_name" {
-  description = "Name for jenkins project"
-  default     = "jenkins-gke"
 }
 
 variable "jenkins_k8s_config" {

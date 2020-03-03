@@ -32,7 +32,7 @@ pipeline {
       steps {
         container('terraform') {
           sh '''cd example-pipelines/example-create
-          terraform plan -var project_id=$PROJECT_ID --out=test.out'''
+          terraform plan --out=test.out'''
         }
       }
     }
