@@ -16,7 +16,7 @@
 
 terraform {
   backend "gcs" {
-    bucket = "TFSTATE_GCS_BACKEND"
+    bucket = "festive-terrain-2-tfstate"
     prefix = "env/dev"
   }
 }

@@ -1,6 +1,6 @@
 
 
-project_id = "PROJECT_ID"
+project_id = "festive-terrain-2"
 vpc_network_name = "example-vpc"
 subnet1_region = "us-central1"
 subnet1_zone = "us-central1-a"
