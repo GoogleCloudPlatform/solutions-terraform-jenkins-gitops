@@ -16,7 +16,7 @@
 
 terraform {
   backend "gcs" {
-    bucket = "rubbo-jenkins-terraform-tfstate"
+    bucket = "rubbo-jenkins-tf1-tfstate"
     prefix = "jenkins"
   }
 }

@@ -1,7 +1,7 @@
 
 
-project_id = "rubbo-jenkins-terraform"
-tfstate_gcs_backend = "rubbo-jenkins-terraform-tfstate"
+project_id = "rubbo-jenkins-tf1"
+tfstate_gcs_backend = "rubbo-jenkins-tf1-tfstate"
 restart_policy = "Always"
 region = "us-east4"
 zones = ["us-east4-a"]

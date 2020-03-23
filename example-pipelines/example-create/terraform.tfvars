@@ -1,6 +1,6 @@
 
 
-project_id = "rubbo-jenkins-terraform"
+project_id = "rubbo-jenkins-tf1"
 vpc_network_name = "example-vpc"
 subnet1_region = "us-central1"
 subnet1_zone = "us-central1-a"
