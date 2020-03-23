@@ -45,7 +45,7 @@ module "gcp-network" {
 resource "google_compute_instance" "vm_0001" {
   project      = var.project_id
   zone         = var.subnet1_zone
-  name         = "${var.project_id}-vm-0001"
+  name         = "${var.project_id}-my-new-vm"
   machine_type = "f1-micro"
   network_interface {
     network    = module.gcp-network.network_name
