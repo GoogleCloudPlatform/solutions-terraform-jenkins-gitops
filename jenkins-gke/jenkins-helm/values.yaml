@@ -13,6 +13,7 @@
 # limitations under the License.
 
 master:
+  tag: "2.222"
   containerEnv:
     - name: PROJECT_ID
       valueFrom:
@@ -51,7 +52,7 @@ master:
     - docker-custom-build-environment:1.7.3
     - credentials:2.3.0
     - docker-commons:1.15
-    - docker-workflow:1.21
+    - docker-workflow:1.22
     - job-dsl:1.76
     - matrix-auth:2.5
   JCasC:
