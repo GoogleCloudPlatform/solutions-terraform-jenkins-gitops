@@ -54,7 +54,6 @@ master:
     - docker-commons:1.15
     - docker-workflow:1.22
     - job-dsl:1.76
-    - matrix-auth:2.5
   JCasC:
     enabled: true
     pluginVersion: "1.35"
@@ -114,9 +113,8 @@ master:
                                 - emptyDirVolume:
                                     memory: false
                                     mountPath: "/tmp"
-                              idleMinutes: "1"
                               podRetention: "never"
-                              activeDeadlineSeconds: "240"
+                              activeDeadlineSeconds: "300"
                               slaveConnectTimeout: "1000"
         credentials: |
             credentials:
@@ -147,7 +145,7 @@ master:
                             buildOriginBranchWithPR(false)
                             buildOriginBranch(true)
                             buildOriginPRMerge(true)
-                            buildForkPRMerge(true)
+                            includes("dev prod PR*")
                         }
                         }
                         orphanedItemStrategy {
