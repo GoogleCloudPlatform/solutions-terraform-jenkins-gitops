@@ -1,7 +1,7 @@
 
 
 project_id = "PROJECT_ID"
-tfstate_gcs_backend = "TFSTATE_GCS_BACKEND"
+tfstate_gcs_backend = "PROJECT_ID-tfstate"
 restart_policy = "Always"
 region = "us-east4"
 zones = ["us-east4-a"]
