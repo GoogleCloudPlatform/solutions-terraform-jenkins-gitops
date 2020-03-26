@@ -23,7 +23,12 @@ pipeline {
       when { anyOf {branch "prod";branch "dev";changeRequest() } }
       steps {
         container('terraform') {
-          sh '''cd example-pipelines/example-create
+          sh '''echo ""
+          echo "*************** TERRAFOM INIT and VALIDATE ******************"
+          echo "******* At environment: ${env.BRANCH_NAME} ********"
+          echo "*************************************************"
+          echo ""
+          cd example-pipelines/environments/${env.BRANCH_NAME}
           terraform init
           terraform validate'''
         }
@@ -33,7 +38,12 @@ pipeline {
       when { anyOf {branch "prod";branch "dev";changeRequest() } }
       steps {
         container('terraform') {
-          sh '''cd example-pipelines/example-create
+          sh '''echo ""
+          echo "*************** TERRAFOM Plan ******************"
+          echo "******* At environment: ${env.BRANCH_NAME} ********"
+          echo "*************************************************"
+          echo ""
+          cd example-pipelines/environments/${env.BRANCH_NAME}
           terraform plan --out=test.out'''
         }
       }
@@ -50,7 +60,12 @@ pipeline {
       when { anyOf {branch "prod";branch "dev" } }
       steps {
         container('terraform') {
-          sh '''cd example-pipelines/example-create
+          sh '''echo ""
+          echo "*************** TERRAFOM APPLY ******************"
+          echo "******* At environment: ${env.BRANCH_NAME} ********"
+          echo "*************************************************"
+          echo ""
+          cd example-pipelines/environments/${env.BRANCH_NAME}
           terraform apply -input=false test.out'''
         }
       }
