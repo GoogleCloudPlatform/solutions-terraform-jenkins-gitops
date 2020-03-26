@@ -25,10 +25,10 @@ pipeline {
         container('terraform') {
           sh '''echo ""
           echo "*************** TERRAFOM INIT and VALIDATE ******************"
-          echo "******* At environment: ${env.BRANCH_NAME} ********"
+          echo "******* At environment: ${CHANGE_TARGET} ********"
           echo "*************************************************"
           echo ""
-          cd example-pipelines/environments/${env.BRANCH_NAME}
+          cd example-pipelines/environments/${CHANGE_TARGET}
           terraform init
           terraform validate'''
         }
@@ -40,10 +40,10 @@ pipeline {
         container('terraform') {
           sh '''echo ""
           echo "*************** TERRAFOM Plan ******************"
-          echo "******* At environment: ${env.BRANCH_NAME} ********"
+          echo "******* At environment: ${CHANGE_TARGET} ********"
           echo "*************************************************"
           echo ""
-          cd example-pipelines/environments/${env.BRANCH_NAME}
+          cd example-pipelines/environments/${CHANGE_TARGET}
           terraform plan --out=test.out'''
         }
       }
@@ -62,10 +62,10 @@ pipeline {
         container('terraform') {
           sh '''echo ""
           echo "*************** TERRAFOM APPLY ******************"
-          echo "******* At environment: ${env.BRANCH_NAME} ********"
+          echo "******* At environment: ${CHANGE_TARGET} ********"
           echo "*************************************************"
           echo ""
-          cd example-pipelines/environments/${env.BRANCH_NAME}
+          cd example-pipelines/environments/${CHANGE_TARGET}
           terraform apply -input=false test.out'''
         }
       }
