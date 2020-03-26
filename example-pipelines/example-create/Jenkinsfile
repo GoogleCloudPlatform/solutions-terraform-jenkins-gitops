@@ -20,6 +20,7 @@ pipeline {
   }
   stages {
     stage('TF init & validate') {
+      when { anyOf {branch "prod";branch "dev";changeRequest() } }
       steps {
         container('terraform') {
           sh '''cd example-pipelines/example-create
@@ -29,6 +30,7 @@ pipeline {
       }
     }
     stage('TF plan') {
+      when { anyOf {branch "prod";branch "dev";changeRequest() } }
       steps {
         container('terraform') {
           sh '''cd example-pipelines/example-create
@@ -37,7 +39,7 @@ pipeline {
       }
     }
     stage('Wait for Appproval') {
-      when { branch "master" }
+      when { anyOf {branch "prod";branch "dev" } }
       steps {
         script {
           def userInput = input(id: 'confirm', message: 'Apply Terraform?', parameters: [ [$class: 'BooleanParameterDefinition', defaultValue: false, description: 'Apply terraform', name: 'confirm'] ])
@@ -45,7 +47,7 @@ pipeline {
       }
     }
     stage('TF Apply') {
-      when { branch "master" }
+      when { anyOf {branch "prod";branch "dev" } }
       steps {
         container('terraform') {
           sh '''cd example-pipelines/example-create
