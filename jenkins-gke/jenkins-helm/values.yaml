@@ -54,7 +54,6 @@ master:
     - docker-commons:1.15
     - docker-workflow:1.22
     - job-dsl:1.76
-    - matrix-auth:2.5
   JCasC:
     enabled: true
     pluginVersion: "1.35"
