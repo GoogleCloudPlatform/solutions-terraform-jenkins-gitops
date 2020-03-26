@@ -114,9 +114,8 @@ master:
                                 - emptyDirVolume:
                                     memory: false
                                     mountPath: "/tmp"
-                              idleMinutes: "1"
                               podRetention: "never"
-                              activeDeadlineSeconds: "240"
+                              activeDeadlineSeconds: "300"
                               slaveConnectTimeout: "1000"
         credentials: |
             credentials:
@@ -147,7 +146,7 @@ master:
                             buildOriginBranchWithPR(false)
                             buildOriginBranch(true)
                             buildOriginPRMerge(true)
-                            buildForkPRMerge(true)
+                            includes("dev prod PR*")
                         }
                         }
                         orphanedItemStrategy {
