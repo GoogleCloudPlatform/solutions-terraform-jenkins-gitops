@@ -23,14 +23,26 @@ pipeline {
       when { anyOf {branch "prod";branch "dev";changeRequest() } }
       steps {
         container('terraform') {
-          sh '''echo ""
-          echo "*************** TERRAFOM INIT and VALIDATE ******************"
-          echo "******* At environment: ${CHANGE_TARGET} ********"
-          echo "*************************************************"
-          echo ""
-          cd example-pipelines/environments/${CHANGE_TARGET}
-          terraform init
-          terraform validate'''
+          sh '''
+          if [ -d "example-pipelines/environments/$CHANGE_TARGET/" ]; then
+            cd example-pipelines/environments/${CHANGE_TARGET}
+            terraform init
+            terraform validate
+          else
+            for dir in example-pipelines/environments/*/
+            do 
+              cd ${dir}
+              env=${dir%*/}
+              env=${env#*/}
+              echo ""
+              echo "*************** TERRAFOM INIT and VALIDATE ******************"
+              echo "******* At environment: ${env} ********"
+              echo "*************************************************"
+              terraform init || exit 1
+              terraform validate || exit 1
+              cd ../../../
+            done
+          fi'''
         }
       }
     }
@@ -38,13 +50,24 @@ pipeline {
       when { anyOf {branch "prod";branch "dev";changeRequest() } }
       steps {
         container('terraform') {
-          sh '''echo ""
-          echo "*************** TERRAFOM Plan ******************"
-          echo "******* At environment: ${CHANGE_TARGET} ********"
-          echo "*************************************************"
-          echo ""
-          cd example-pipelines/environments/${CHANGE_TARGET}
-          terraform plan --out=test.out'''
+          sh '''
+          if [ -d "example-pipelines/environments/$CHANGE_TARGET/" ]; then
+            cd example-pipelines/environments/${CHANGE_TARGET}
+            terraform plan
+          else
+            for dir in example-pipelines/environments/*/
+            do 
+              cd ${dir}
+              env=${dir%*/}
+              env=${env#*/}
+              echo ""
+              echo "*************** TERRAFOM PLAN ******************"
+              echo "******* At environment: ${env} ********"
+              echo "*************************************************"
+              terraform plan || exit 1
+              cd ../../../
+            done
+          fi'''
         }
       }
     }
@@ -60,13 +83,16 @@ pipeline {
       when { anyOf {branch "prod";branch "dev" } }
       steps {
         container('terraform') {
-          sh '''echo ""
-          echo "*************** TERRAFOM APPLY ******************"
-          echo "******* At environment: ${CHANGE_TARGET} ********"
-          echo "*************************************************"
-          echo ""
-          cd example-pipelines/environments/${CHANGE_TARGET}
-          terraform apply -input=false test.out'''
+          sh '''
+          env
+          if [ -d "example-pipelines/environments/$BRANCH_NAME/" ]; then
+            cd example-pipelines/environments/${BRANCH_NAME}
+            terraform apply -input=false --auto-approve test.out
+          else
+            echo "*************** SKIPPING APPLY ******************"
+            echo "Branch '$BRANCH_NAME' does not represent an oficial environment."
+            echo "*************************************************"
+          fi'''
         }
       }
     }
