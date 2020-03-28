@@ -24,8 +24,14 @@ pipeline {
       steps {
         container('terraform') {
           sh '''
-          if [ -d "example-pipelines/environments/$CHANGE_TARGET/" ]; then
-            cd example-pipelines/environments/${CHANGE_TARGET}
+          if [[ $CHANGE_TARGET ]]; then
+            TARGET_ENV=$CHANGE_TARGET
+          else
+            TARGET_ENV=$BRANCH_NAME
+          fi
+
+          if [ -d "example-pipelines/environments/${TARGET_ENV}/" ]; then
+            cd example-pipelines/environments/${TARGET_ENV}
             terraform init
             terraform validate
           else
@@ -51,8 +57,14 @@ pipeline {
       steps {
         container('terraform') {
           sh '''
-          if [ -d "example-pipelines/environments/$CHANGE_TARGET/" ]; then
-            cd example-pipelines/environments/${CHANGE_TARGET}
+          if [[ $CHANGE_TARGET ]]; then
+            TARGET_ENV=$CHANGE_TARGET
+          else
+            TARGET_ENV=$BRANCH_NAME
+          fi
+         
+          if [ -d "example-pipelines/environments/${TARGET_ENV}/" ]; then
+            cd example-pipelines/environments/${TARGET_ENV}
             terraform plan
           else
             for dir in example-pipelines/environments/*/
@@ -84,9 +96,14 @@ pipeline {
       steps {
         container('terraform') {
           sh '''
-          env
-          if [ -d "example-pipelines/environments/$BRANCH_NAME/" ]; then
-            cd example-pipelines/environments/${BRANCH_NAME}
+          if [[ $CHANGE_TARGET ]]; then
+            TARGET_ENV=$CHANGE_TARGET
+          else
+            TARGET_ENV=$BRANCH_NAME
+          fi
+
+          if [ -d "example-pipelines/environments/${TARGET_ENV}/" ]; then
+            cd example-pipelines/environments/${TARGET_ENV}
             terraform apply -input=false --auto-approve test.out
           else
             echo "*************** SKIPPING APPLY ******************"
