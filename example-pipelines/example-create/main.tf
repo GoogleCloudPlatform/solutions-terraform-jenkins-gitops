@@ -15,6 +15,14 @@
  */
 
 /*****************************************
+  Locals
+ *****************************************/
+locals {
+  vpc_network_name = "example-vpc-${var.environment}"
+  vm_name = "example-vm-${var.environment}-001"
+}
+
+/*****************************************
   Google Provider Configuration
  *****************************************/
 provider "google" {
@@ -28,11 +36,11 @@ module "gcp-network" {
   source       = "terraform-google-modules/network/google"
   version      = "~> 1.4.0"
   project_id   = var.project_id
-  network_name = var.vpc_network_name
+  network_name = local.vpc_network_name
 
   subnets = [
     {
-      subnet_name   = "${var.vpc_network_name}-${var.subnet1_region}"
+      subnet_name   = "${local.vpc_network_name}-${var.subnet1_region}"
       subnet_ip     = var.subnet1_cidr
       subnet_region = var.subnet1_region
     },
@@ -45,7 +53,7 @@ module "gcp-network" {
 resource "google_compute_instance" "vm_0001" {
   project      = var.project_id
   zone         = var.subnet1_zone
-  name         = "${var.project_id}-vm-0001"
+  name         = local.vm_name
   machine_type = "f1-micro"
   network_interface {
     network    = module.gcp-network.network_name
