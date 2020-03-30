@@ -100,7 +100,7 @@ pipeline {
 
           if [ -d "example-pipelines/environments/${TARGET_ENV}/" ]; then
             cd example-pipelines/environments/${TARGET_ENV}
-            terraform apply -input=false --auto-approve
+            terraform apply -input=false -auto-approve
           else
             echo "*************** SKIPPING APPLY ******************"
             echo "Branch '$TARGET_ENV' does not represent an official environment."
