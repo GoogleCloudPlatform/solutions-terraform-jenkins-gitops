@@ -1,7 +1,5 @@
-
-
 project_id = "PROJECT_ID"
-vpc_network_name = "example-vpc"
+environment = "prod"
 subnet1_region = "us-central1"
 subnet1_zone = "us-central1-a"
-subnet1_cidr = "10.0.0.0/17"
+subnet1_cidr = "10.20.0.0/16"

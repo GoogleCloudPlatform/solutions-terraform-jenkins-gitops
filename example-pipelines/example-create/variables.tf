@@ -21,10 +21,10 @@ variable "project_id" {
   default     = ""
 }
 
-variable "vpc_network_name" {
+variable "environment" {
   type        = string
-  description = "Name of VPC Network to be created"
-  default     = "example-vpc"
+  description = "Name of the environment (dev or prod)"
+  default     = "dev"
 }
 
 variable "subnet1_region" {
