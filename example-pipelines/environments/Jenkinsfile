@@ -19,6 +19,7 @@ pipeline {
       label "terraform-exec"
   }
   stages {
+    // [START tf-init, tf-validate]
     stage('TF init & validate') {
       when { anyOf {branch "prod";branch "dev";changeRequest() } }
       steps {
@@ -52,6 +53,9 @@ pipeline {
         }
       }
     }
+    // [END tf-init, tf-validate]
+
+    // [START tf-plan]
     stage('TF plan') {
       when { anyOf {branch "prod";branch "dev";changeRequest() } }
       steps {
@@ -83,6 +87,9 @@ pipeline {
         }
       }
     }
+    // [END tf-plan]
+
+    // [START tf-apply]
     stage('TF Apply') {
       when { anyOf {branch "prod";branch "dev" } }
       steps {
@@ -101,5 +108,6 @@ pipeline {
         }
       }
     }
+    // [END tf-apply]
   }
 }
