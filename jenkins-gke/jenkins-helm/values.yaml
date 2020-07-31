@@ -13,7 +13,7 @@
 # limitations under the License.
 
 master:
-  tag: "2.222"
+  tag: "2.243"
   containerEnv:
     - name: PROJECT_ID
       valueFrom:
@@ -43,20 +43,21 @@ master:
   servicePort: 80
   serviceType: LoadBalancer
   installPlugins:
-    - kubernetes:1.21.4
-    - workflow-job:2.36
+    - kubernetes:1.26.2
+    - workflow-job:2.39
     - workflow-aggregator:2.6
-    - credentials-binding:1.20
-    - git:4.0.0
-    - blueocean:1.21.0
+    - credentials-binding:1.23
+    - git:4.3.0
+    - blueocean:1.23.2
     - docker-custom-build-environment:1.7.3
-    - credentials:2.3.0
-    - docker-commons:1.15
-    - docker-workflow:1.22
-    - job-dsl:1.76
+    - credentials:2.3.11
+    - docker-commons:1.17
+    - docker-workflow:1.23
+    - job-dsl:1.77
+    - configuration-as-code:1.41
+    - jdk-tool:1.4
   JCasC:
     enabled: true
-    pluginVersion: "1.35"
     configScripts:
         cloud: |
             jenkins:
@@ -141,7 +142,7 @@ master:
                             id('12312313')
                             scanCredentialsId('github-token')
                             repoOwner("${GITHUB_USERNAME}")
-                            repository("${GITHUB_REPO}")                            
+                            repository("${GITHUB_REPO}")
                             buildOriginBranch(true)
                             buildOriginPRMerge(true)
                             includes("dev prod PR*")
