@@ -16,10 +16,5 @@ export JENKINS_PROJECT_ID=$(cd ../jenkins-gke/tf-gke && terraform output jenkins
 export ZONE=$(cd ../jenkins-gke/tf-gke && terraform output zone)
 export CLUSTER_NAME=$(cd ../jenkins-gke/tf-gke && terraform output cluster_name)
 gcloud container clusters get-credentials ${CLUSTER_NAME} --zone=${ZONE} --project=${JENKINS_PROJECT_ID}
-curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
-chmod 700 get_helm.sh
-./get_helm.sh
-kubectl create secret generic github-secrets --save-config --from-literal=github_username=$GITHUB_USERNAME --from-literal=github_token=$GITHUB_TOKEN --from-literal=github_repo=$GITHUB_REPO --dry-run -o yaml | kubectl apply -f -
-helm install jenkins  -f ../jenkins-gke/jenkins-helm/values.yaml stable/jenkins --version 1.9.18
 printf jenkins-username:admin;echo
 printf jenkins-password: ; printf $(kubectl get secret --namespace default jenkins -o jsonpath="{.data.jenkins-admin-password}" | base64 --decode);echo
