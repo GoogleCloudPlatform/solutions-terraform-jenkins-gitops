@@ -51,11 +51,6 @@ output "gcp_service_account_email" {
   value       = module.workload_identity.gcp_service_account_email
 }
 
-# output "test_proj_backend_bucket" {
-#   description = "GCS Bucket to store backend for test pipelines"
-#   value       = google_storage_bucket.jenkins-test-pipeline-backend.name
-# }
-
 output "jenkins_k8s_config_secrets" {
   description = "Name of the secret required to configure k8s executers on Jenkins"
   value       = var.jenkins_k8s_config

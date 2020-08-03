@@ -61,3 +61,15 @@ variable "jenkins_k8s_config" {
   default     = "jenkins-k8s-config"
 }
 
+variable "github_username" {
+  description = "Github user/organization name where the terraform repo resides."
+}
+
+variable "github_token" {
+  description = "Github token to access repo."
+}
+
+variable "github_repo" {
+  description = "Github repo name."
+  default     = "solutions-terraform-jenkins-gitops"
+}
