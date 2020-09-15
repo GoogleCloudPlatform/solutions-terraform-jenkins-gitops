@@ -13,7 +13,7 @@
 # limitations under the License.
 
 master:
-  tag: "2.243"
+  tag: "2.248"
   containerEnv:
     - name: PROJECT_ID
       valueFrom:
@@ -100,7 +100,7 @@ master:
                               label: "terraform-exec"
                               containers:
                                 - name: "terraform"
-                                  image: "hashicorp/terraform:light"
+                                  image: "hashicorp/terraform:0.12.29"
                                   alwaysPullImage: false
                                   workingDir: "/home/jenkins/agent"
                                   ttyEnabled: true
