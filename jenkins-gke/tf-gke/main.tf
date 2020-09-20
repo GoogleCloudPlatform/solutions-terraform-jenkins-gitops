@@ -24,6 +24,7 @@ module "enables-google-apis" {
 
   project_id = var.project_id
 
+
   activate_apis = [
     "iam.googleapis.com",
     "cloudresourcemanager.googleapis.com",
@@ -34,6 +35,9 @@ module "enables-google-apis" {
     "logging.googleapis.com",
     "monitoring.googleapis.com",
   ]
+  
+  // activate_apis = []
+  
 }
 
 /*****************************************
