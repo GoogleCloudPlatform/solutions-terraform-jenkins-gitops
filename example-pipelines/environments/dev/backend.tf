@@ -15,7 +15,7 @@
 
 terraform {
   backend "gcs" {
-    bucket = "PROJECT_ID-tfstate"
+    bucket = "glossy-mason-309017-tfstate"
     prefix = "env/dev"
   }
 }
