@@ -1,19 +1,15 @@
-/**
- * Copyright 2020 Google LLC
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
+/*
+iam.googleapis.com
+cloudresourcemanager.googleapis.com
+compute.googleapis.com
+containerregistry.googleapis.com
+container.googleapis.com
+storage-component.googleapis.com
+logging.googleapis.com
+monitoring.googleapis.com
+serviceusage.googleapis.com
+gcurl "https://serviceusage.googleapis.com/v1/projects/${PROJECT_NUMBER}/services?filter=state:DISABLED"
+*/
 
 /*****************************************
   Activate Services in Jenkins Project
@@ -91,10 +87,16 @@ module "jenkins-gke" {
   node_metadata            = "GKE_METADATA_SERVER"
   node_pools = [
     {
-      name         = "butler-pool"
-      min_count    = 3
-      max_count    = 6
-      auto_upgrade = true
+      name               = "butler-pool"
+      node_count         = 1
+      min_count          = 1
+      max_count          = 2
+      preemptible        = true
+      machine_type       = "n1-standard-2"
+      disk_size_gb       = 20
+      disk_type          = "pd-standard"
+      image_type         = "COS"
+      auto_repair        = true    
     }
   ]
 }
@@ -177,24 +179,19 @@ resource "google_storage_bucket_iam_member" "tf-state-writer" {
 resource "google_project_iam_member" "jenkins-project" {
   project = module.enables-google-apis.project_id
   role    = "roles/editor"
-
   member = module.workload_identity.gcp_service_account_fqn
-
 }
 
 data "local_file" "helm_chart_values" {
   filename = "${path.module}/values.yaml"
 }
-
 resource "helm_release" "jenkins" {
   name       = "jenkins"
-  repository = "https://kubernetes-charts.storage.googleapis.com"
+  repository = "https://charts.helm.sh/stable"
   chart      = "jenkins"
-  version    = "1.9.18"
+ # version    = "1.9.18"
   timeout    = 1200
-
   values = [data.local_file.helm_chart_values.content]
-
   depends_on = [
     kubernetes_secret.gh-secrets,
   ]
