@@ -1,7 +1,7 @@
 
 
-project_id = "PROJECT_ID"
-tfstate_gcs_backend = "PROJECT_ID-tfstate"
+project_id = "searce-playground"
+tfstate_gcs_backend = "rakhi-auto-infra-tfstate-bucket"
 region = "us-east4"
 zones = ["us-east4-a"]
 ip_range_pods_name = "ip-range-pods"

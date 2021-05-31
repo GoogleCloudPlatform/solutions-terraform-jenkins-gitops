@@ -16,7 +16,7 @@
 
 terraform {
   backend "gcs" {
-    bucket = "PROJECT_ID-tfstate"
+    bucket = "rakhi-auto-infra-tfstate-bucket"
     prefix = "jenkins"
   }
 }
