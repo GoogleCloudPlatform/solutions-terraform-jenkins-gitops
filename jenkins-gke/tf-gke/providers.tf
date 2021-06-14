@@ -30,7 +30,7 @@ provider "google-beta" {
  *****************************************/
 provider "kubernetes" {
 //  version                = "~> 1.10"
-  load_config_file       = false
+//  load_config_file       = false
   host                   = module.jenkins-gke.endpoint
   token                  = data.google_client_config.default.access_token
   cluster_ca_certificate = base64decode(module.jenkins-gke.ca_certificate)
