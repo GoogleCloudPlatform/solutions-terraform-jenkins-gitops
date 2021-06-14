@@ -18,18 +18,18 @@
   Google Provider Configuration
  *****************************************/
 provider "google" {
-  version = "~>  3.1"
+  project = var.project_id
 }
 
 provider "google-beta" {
-  version = "~>  3.1"
+  project = var.project_id
 }
 
 /*****************************************
   Kubernetes provider configuration
  *****************************************/
 provider "kubernetes" {
-  version                = "~> 1.10"
+//  version                = "~> 1.10"
   load_config_file       = false
   host                   = module.jenkins-gke.endpoint
   token                  = data.google_client_config.default.access_token
@@ -41,7 +41,7 @@ provider "kubernetes" {
  *****************************************/
 module "gke_auth" {
   source  = "terraform-google-modules/kubernetes-engine/google//modules/auth"
-  version = "~> 9.1"
+//  version = "~> 9.1"
 
   project_id   = module.enables-google-apis.project_id
   cluster_name = module.jenkins-gke.name
