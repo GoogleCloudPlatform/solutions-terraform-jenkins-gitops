@@ -1,4 +1,4 @@
-project_id = "test-project-1-315714"
+project_id = "PROJECT_ID"
 environment = "prod"
 subnet1_region = "us-central1"
 subnet1_zone = "us-central1-a"
