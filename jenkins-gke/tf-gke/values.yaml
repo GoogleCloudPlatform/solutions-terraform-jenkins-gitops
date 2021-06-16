@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-master:
-  tag: "2.248"
+controller:
+  tag: "2.289.1-jdk11"
   containerEnv:
     - name: PROJECT_ID
       valueFrom:
@@ -43,19 +43,19 @@ master:
   servicePort: 80
   serviceType: LoadBalancer
   installPlugins:
-    - kubernetes:1.26.2
-    - workflow-job:2.39
+    - kubernetes:1.30.0
+    - workflow-job:2.41
     - workflow-aggregator:2.6
-    - credentials-binding:1.23
-    - git:4.3.0
-    - blueocean:1.23.2
+    - credentials-binding:1.25
+    - git:4.7.2
+    - blueocean:1.24.7
     - docker-custom-build-environment:1.7.3
-    - credentials:2.3.11
+    - credentials:2.5
     - docker-commons:1.17
-    - docker-workflow:1.23
+    - docker-workflow:1.26
     - job-dsl:1.77
-    - configuration-as-code:1.41
-    - jdk-tool:1.4
+    - configuration-as-code:1.51
+    - jdk-tool:1.5
   JCasC:
     enabled: true
     configScripts:
