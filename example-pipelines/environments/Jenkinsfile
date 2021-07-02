@@ -57,7 +57,7 @@ pipeline {
 
     // [START tf-plan]
     stage('TF plan') {
-      when { anyOf {branch "prod";branch "dev";changeRequest() } }
+     // when { anyOf {branch "prod";branch "dev";changeRequest() } }
       steps {
         container('jnlp') {
           sh '''
@@ -91,7 +91,7 @@ pipeline {
 
     // [START tf-apply]
     stage('TF Apply') {
-      when { anyOf {branch "prod";branch "dev" } }
+      //when { anyOf {branch "prod";branch "dev" } }
       steps {
         container('jnlp') {
           sh '''
