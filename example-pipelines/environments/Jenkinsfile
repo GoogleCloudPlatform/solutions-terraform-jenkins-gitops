@@ -28,7 +28,7 @@ pipeline {
           if [[ $CHANGE_TARGET ]]; then
             TARGET_ENV=$CHANGE_TARGET
           else
-            TARGET_ENV=$GIT_BRANCH
+            TARGET_ENV=${GIT_BRANCH#*/}
           fi
 
           if [ -d "example-pipelines/environments/${TARGET_ENV}/" ]; then
@@ -64,7 +64,7 @@ pipeline {
           if [[ $CHANGE_TARGET ]]; then
             TARGET_ENV=$CHANGE_TARGET
           else
-            TARGET_ENV=$GIT_BRANCH
+            TARGET_ENV=${GIT_BRANCH#*/}
           fi
          
           if [ -d "example-pipelines/environments/${TARGET_ENV}/" ]; then
@@ -95,7 +95,7 @@ pipeline {
       steps {
         container('jnlp') {
           sh '''
-          TARGET_ENV=$GIT_BRANCH
+          TARGET_ENV=${GIT_BRANCH#*/}
 
           if [ -d "example-pipelines/environments/${TARGET_ENV}/" ]; then
             cd example-pipelines/environments/${TARGET_ENV}
