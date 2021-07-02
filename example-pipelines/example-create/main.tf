@@ -19,7 +19,7 @@
  *****************************************/
 locals {
   vpc_network_name = "example-vpc-${var.environment}"
-  vm_name = "example-vm-${var.environment}-002"
+  vm_name = "example-vm-${var.environment}-004"
 }
 
 /*****************************************
