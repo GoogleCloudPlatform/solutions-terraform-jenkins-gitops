@@ -92,6 +92,10 @@ pipeline {
     // [START tf-apply]
     stage('TF Apply') {
       //when { anyOf {branch "prod";branch "dev" } }
+
+      input{
+    message "Do you want to proceed for deployment?"
+  }
       steps {
         container('jnlp') {
           sh '''
