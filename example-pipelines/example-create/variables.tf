@@ -27,11 +27,11 @@ variable "environment" {
   default     = "dev"
 }
 
-# variable "subnet1_region" {
-#   type        = string
-#   description = "GCP Region where first subnet will be created"
-#   default     = "us-central1"
-# }
+variable "subnet1_region" {
+  type        = string
+  description = "GCP Region where first subnet will be created"
+  default     = "us-central1"
+}
 
 variable "subnet1_zone" {
   type        = string
@@ -39,18 +39,9 @@ variable "subnet1_zone" {
   default     = "us-central1-a"
 }
 
-# variable "subnet1_cidr" {
-#   type        = string
-#   description = "VPC Network CIDR to be assigned to the VPC being created"
-#   default     = "10.0.0.0/17"
-# }
-
-variable "subnet" {
+variable "subnet1_cidr" {
   type        = string
-  description = "Subnet"
+  description = "VPC Network CIDR to be assigned to the VPC being created"
+  default     = "10.0.0.0/17"
 }
 
-variable "network" {
-  type        = string
-  description = "network"
-}

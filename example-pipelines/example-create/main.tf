@@ -19,7 +19,7 @@
  *****************************************/
 locals {
   vpc_network_name = "example-vpc-${var.environment}"
-  vm_name = "example-vm-${var.environment}-005"
+  vm_name = "example-vm-${var.environment}-001"
 }
 
 /*****************************************
@@ -32,20 +32,20 @@ provider "google" {
 /*****************************************
   Create a VPC Network 
  *****************************************/
-# module "gcp-network" {
-#   source       = "terraform-google-modules/network/google"
-#   version      = "~> 1.4.0"
-#   project_id   = var.project_id
-#   network_name = local.vpc_network_name
+module "gcp-network" {
+  source       = "terraform-google-modules/network/google"
+  version      = "~> 1.4.0"
+  project_id   = var.project_id
+  network_name = local.vpc_network_name
 
-#   subnets = [
-#     {
-#       subnet_name   = "${local.vpc_network_name}-${var.subnet1_region}"
-#       subnet_ip     = var.subnet1_cidr
-#       subnet_region = var.subnet1_region
-#     },
-#   ]
-# }
+  subnets = [
+    {
+      subnet_name   = "${local.vpc_network_name}-${var.subnet1_region}"
+      subnet_ip     = var.subnet1_cidr
+      subnet_region = var.subnet1_region
+    },
+  ]
+}
 
 /*****************************************
   Create a GCE VM Instance
@@ -56,8 +56,8 @@ resource "google_compute_instance" "vm_0001" {
   name         = local.vm_name
   machine_type = "f1-micro"
   network_interface {
-    network    = var.network
-    subnetwork = var.subnet
+    network    = module.gcp-network.network_name
+    subnetwork = module.gcp-network.subnets_self_links[0]
   }
   boot_disk {
     initialize_params {
@@ -65,4 +65,3 @@ resource "google_compute_instance" "vm_0001" {
     }
   }
 }
-
