@@ -1,0 +1,144 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: jenkins
+  namespace: jenkins
+  annotations:
+    iam.gke.io/gcp-service-account: custom-sa-rakhi@searce-playground.iam.gserviceaccount.com 
+  labels:
+    app: jenkins
+    env: dev
+---
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: jenkins-master-role
+  namespace: jenkins
+  labels:
+    app: jenkins
+    env: dev
+rules:
+- apiGroups: [""]
+  resources: ["pods", "pods/exec", "pods/log", "persistentvolumeclaims"]
+  verbs: ["*"]
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: jenkins-rolebinding
+  namespace: jenkins
+  labels:
+    app: jenkins
+    env: dev
+subjects:
+- kind: ServiceAccount
+  name: jenkins
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: jenkins-master-role
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: jenkins-pvc
+  namespace: jenkins
+  labels:
+    app: jenkins
+    env: dev
+spec:
+  storageClassName: standard
+  resources:
+    requests:
+      storage: 5Gi
+  accessModes:
+    - ReadWriteOnce
+---
+# apiVersion: extensions/v1beta1
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jenkins
+  namespace: jenkins
+  labels:
+    app: jenkins
+    env: dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jenkins
+  template:
+    metadata:
+      labels:
+        app: jenkins
+    spec:
+      serviceAccountName: jenkins
+      containers:
+        - name: jenkins-master
+          image: gcr.io/searce-playground/jenkins-img:v4.263.1-lts
+          ports:
+            - name: http-port
+              containerPort: 8080
+            - name: jnlp-port
+              containerPort: 50000
+          readinessProbe:
+            httpGet:
+              path: /login
+              port: 8080
+            timeoutSeconds: 4
+            successThreshold: 3
+            failureThreshold: 2
+            initialDelaySeconds: 30
+            periodSeconds: 30
+          securityContext:
+              privileged: true
+          volumeMounts:
+            - name: jenkins-vol
+              mountPath: /var/jenkins_home
+            - name: docker-socket-volume
+              mountPath: /var/run/docker.sock
+      initContainers:  
+        - name: increase-fd-ulimit
+          image: busybox
+          command: ["sh", "-c", "ulimit -n 65536"]
+          securityContext:
+            privileged: true
+      volumes:
+        - name: jenkins-vol
+          persistentVolumeClaim:
+            claimName: jenkins-pvc
+        - name: docker-socket-volume
+          hostPath:
+            path: /var/run/docker.sock
+            #type: File
+
+    
+
+---
+# Service for jenkins-agents
+apiVersion: v1
+kind: Service
+metadata:
+  name: jenkins-agent
+  namespace: jenkins
+  labels:
+    app: jenkins
+    env: dev
+spec:
+  type: LoadBalancer      
+  #loadBalancerIP: 192.168.31.194
+  ports:
+    - port: 50000
+      targetPort: 50000
+      name: slavelistener
+    - port: 8080
+      targetPort: 8080
+      name: slavemasterlistener
+  selector:
+    app: jenkins
+  # loadBalancerSourceRanges:
+  #   - "34.123.237.162/32"  ##Ingress ip 
+---
+
+
