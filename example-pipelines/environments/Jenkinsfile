@@ -23,7 +23,7 @@ pipeline {
     stage('TF init & validate') {
       when { anyOf {branch "prod";branch "dev";changeRequest() } }
       steps {
-        container('jnlp') {
+        container('terraform') {
           sh '''
           if [[ $CHANGE_TARGET ]]; then
             TARGET_ENV=$CHANGE_TARGET
