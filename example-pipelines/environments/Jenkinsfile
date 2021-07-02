@@ -21,7 +21,6 @@ pipeline {
   stages {
     // [START tf-init, tf-validate]
     stage('TF init & validate') {
-     // when { anyOf {branch "prod";branch "dev";changeRequest() } }
       steps {
         container('jnlp') {
           sh '''
@@ -57,7 +56,6 @@ pipeline {
 
     // [START tf-plan]
     stage('TF plan') {
-     // when { anyOf {branch "prod";branch "dev";changeRequest() } }
       steps {
         container('jnlp') {
           sh '''
@@ -91,7 +89,6 @@ pipeline {
 
     // [START tf-apply]
     stage('TF Apply') {
-      //when { anyOf {branch "prod";branch "dev" } }
 
       input{
     message "Do you want to proceed for deployment?"
@@ -115,4 +112,5 @@ pipeline {
     // [END tf-apply]
   }
 }
+
 
