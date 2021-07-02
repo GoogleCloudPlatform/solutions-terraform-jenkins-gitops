@@ -57,7 +57,7 @@ resource "google_compute_instance" "vm_0001" {
   machine_type = "f1-micro"
   network_interface {
     network    = var.network
-    subnetwork = module.var.subnet
+    subnetwork = var.subnet
   }
   boot_disk {
     initialize_params {
