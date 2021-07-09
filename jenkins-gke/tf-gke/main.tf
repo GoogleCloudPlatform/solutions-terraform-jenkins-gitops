@@ -129,9 +129,6 @@ resource "google_project_iam_member" "cluster-dev" {
   member  = module.workload_identity.gcp_service_account_fqn
 }
 
-data "google_client_config" "default" {
-}
-
 /*****************************************
   K8S secrets for configuring K8S executers
  *****************************************/
