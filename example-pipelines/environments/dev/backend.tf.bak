@@ -15,7 +15,7 @@
 
 terraform {
   backend "gcs" {
-    bucket = "machinelearning-250614-tfstate"
-    prefix = "env/prod"
+    bucket = "PROJECT_ID-tfstate"
+    prefix = "env/dev"
   }
 }
