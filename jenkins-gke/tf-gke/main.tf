@@ -20,7 +20,7 @@
  *****************************************/
 module "enables-google-apis" {
   source  = "terraform-google-modules/project-factory/google//modules/project_services"
-  version = "11.0.0"
+  version = "6.0.0"
 
   project_id = var.project_id
 
@@ -41,7 +41,7 @@ module "enables-google-apis" {
  *****************************************/
 module "jenkins-vpc" {
   source  = "terraform-google-modules/network/google"
-  version = "~> 3.0"
+  version = "~> 2.0"
 
   project_id   = module.enables-google-apis.project_id
   network_name = var.network_name
@@ -73,12 +73,12 @@ module "jenkins-vpc" {
  *****************************************/
 module "jenkins-gke" {
   source                   = "terraform-google-modules/kubernetes-engine/google//modules/beta-public-cluster/"
-  version                  = "~> 15.0"
+  version                  = "~> 17.0"
   project_id               = module.enables-google-apis.project_id
   name                     = "jenkins"
   regional                 = false
-  region                   = var.region
-  zones                    = var.zones
+  region                   = "us-east1"
+  zones                    = ["us-east1-b","us-east1-c"]
   network                  = module.jenkins-vpc.network_name
   subnetwork               = module.jenkins-vpc.subnets_names[0]
   ip_range_pods            = var.ip_range_pods_name
@@ -91,10 +91,19 @@ module "jenkins-gke" {
   node_metadata            = "GKE_METADATA_SERVER"
   node_pools = [
     {
-      name         = "butler-pool"
-      min_count    = 3
-      max_count    = 6
-      auto_upgrade = true
+      name                      = "butler-pool"
+      machine_type              = "e2-medium"
+      node_locations            = "us-east1-b,us-east1-c"
+      min_count                 = 3
+      max_count                 = 6
+      local_ssd_count           = 0
+      local_ssd_ephemeral_count = 0
+      disk_size_gb              = 100
+      disk_type                 = "pd-standard"
+      image_type                = "COS"
+      auto_repair               = true
+      auto_upgrade              = true
+      service_account           = "jenkins-wi-jenkins@${var.project_id}.iam.gserviceaccount.com"
     }
   ]
 }
@@ -115,7 +124,7 @@ resource "google_project_iam_member" "gke" {
  *****************************************/
 module "workload_identity" {
   source              = "terraform-google-modules/kubernetes-engine/google//modules/workload-identity"
-  version             = "~> 15.0"
+  version             = "~> 7.0"
   project_id          = module.enables-google-apis.project_id
   name                = "jenkins-wi-${module.jenkins-gke.name}"
   namespace           = "default"
@@ -127,6 +136,9 @@ resource "google_project_iam_member" "cluster-dev" {
   project = module.enables-google-apis.project_id
   role    = "roles/container.developer"
   member  = module.workload_identity.gcp_service_account_fqn
+}
+
+data "google_client_config" "default" {
 }
 
 /*****************************************
@@ -187,8 +199,12 @@ resource "helm_release" "jenkins" {
   name       = "jenkins"
   repository = "https://charts.helm.sh/stable"
   chart      = "jenkins"
-  version    = "1.9.18"
+  version    = "2.5.4"
   timeout    = 1200
+#  replace    = true
+#  verify     = true
+#  force_update = true
+#  recreate_pods = true
 
   values = [data.local_file.helm_chart_values.content]
 

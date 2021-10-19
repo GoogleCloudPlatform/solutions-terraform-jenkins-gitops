@@ -20,17 +20,17 @@ variable "project_id" {
 
 variable "tfstate_gcs_backend" {
   description = "Name of the GCS bucket to use as a backend for Terraform State"
-  default     = "TFSTATE_GCS_BACKEND"
+  default     = "example-nonprod-devops-remote-state-bucket"
 }
 
 variable "region" {
   description = "The GCP region to deploy instances into"
-  default     = "us-east4"
+  default     = "us-east1"
 }
 
 variable "zones" {
   description = "The GCP zone to deploy gke into"
-  default     = ["us-east4-a"]
+  default     = ["us-east1-b", "us-east1-c"]
 }
 
 variable "ip_range_pods_name" {
