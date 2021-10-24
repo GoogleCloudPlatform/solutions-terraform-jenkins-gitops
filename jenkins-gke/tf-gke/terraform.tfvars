@@ -1,7 +1,7 @@
 
 
-project_id = "PROJECT_ID"
-tfstate_gcs_backend = "PROJECT_ID-tfstate"
+project_id = "uplifted-agency-254601"
+tfstate_gcs_backend = "uplifted-agency-254601-tfstate"
 region = "us-east4"
 zones = ["us-east4-a"]
 ip_range_pods_name = "ip-range-pods"

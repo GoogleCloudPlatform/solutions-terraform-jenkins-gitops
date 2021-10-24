@@ -16,7 +16,7 @@
 
 terraform {
   backend "gcs" {
-    bucket = "PROJECT_ID-tfstate"
+    bucket = "uplifted-agency-254601-tfstate"
     prefix = "jenkins"
   }
 }

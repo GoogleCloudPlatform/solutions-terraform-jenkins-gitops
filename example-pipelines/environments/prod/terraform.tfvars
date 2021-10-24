@@ -1,4 +1,4 @@
-project_id = "PROJECT_ID"
+project_id = "uplifted-agency-254601"
 environment = "prod"
 subnet1_region = "us-central1"
 subnet1_zone = "us-central1-a"
