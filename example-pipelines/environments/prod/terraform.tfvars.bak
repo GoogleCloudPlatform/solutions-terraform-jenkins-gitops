@@ -1,4 +1,4 @@
-project_id = "jtd-project-335815"
+project_id = "PROJECT_ID"
 environment = "prod"
 subnet1_region = "us-central1"
 subnet1_zone = "us-central1-a"
