@@ -16,19 +16,18 @@
 
 pipeline {
   agent {
-      label "terraform-exec"
+      label "jenkins-slave"
   }
   stages {
     // [START tf-init, tf-validate]
     stage('TF init & validate') {
-      when { anyOf {branch "prod";branch "dev";changeRequest() } }
       steps {
-        container('terraform') {
+        container('jnlp') {
           sh '''
           if [[ $CHANGE_TARGET ]]; then
             TARGET_ENV=$CHANGE_TARGET
           else
-            TARGET_ENV=$BRANCH_NAME
+            TARGET_ENV=${GIT_BRANCH#*/}
           fi
 
           if [ -d "example-pipelines/environments/${TARGET_ENV}/" ]; then
@@ -57,14 +56,13 @@ pipeline {
 
     // [START tf-plan]
     stage('TF plan') {
-      when { anyOf {branch "prod";branch "dev";changeRequest() } }
       steps {
-        container('terraform') {
+        container('jnlp') {
           sh '''
           if [[ $CHANGE_TARGET ]]; then
             TARGET_ENV=$CHANGE_TARGET
           else
-            TARGET_ENV=$BRANCH_NAME
+            TARGET_ENV=${GIT_BRANCH#*/}
           fi
          
           if [ -d "example-pipelines/environments/${TARGET_ENV}/" ]; then
@@ -91,11 +89,14 @@ pipeline {
 
     // [START tf-apply]
     stage('TF Apply') {
-      when { anyOf {branch "prod";branch "dev" } }
+
+      input{
+    message "Do you want to proceed for deployment?"
+  }
       steps {
-        container('terraform') {
+        container('jnlp') {
           sh '''
-          TARGET_ENV=$BRANCH_NAME
+          TARGET_ENV=${GIT_BRANCH#*/}
 
           if [ -d "example-pipelines/environments/${TARGET_ENV}/" ]; then
             cd example-pipelines/environments/${TARGET_ENV}
@@ -111,3 +112,5 @@ pipeline {
     // [END tf-apply]
   }
 }
+
+

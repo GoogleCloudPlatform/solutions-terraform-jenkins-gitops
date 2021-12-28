@@ -44,3 +44,4 @@ variable "subnet1_cidr" {
   description = "VPC Network CIDR to be assigned to the VPC being created"
   default     = "10.0.0.0/17"
 }
+
