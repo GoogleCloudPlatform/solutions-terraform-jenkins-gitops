@@ -51,6 +51,7 @@ module "gcp-network" {
   Create a GCE VM Instance
  *****************************************/
 resource "google_compute_instance" "vm_0001" {
+  count = 3
   project      = var.project_id
   zone         = var.subnet1_zone
   name         = local.vm_name

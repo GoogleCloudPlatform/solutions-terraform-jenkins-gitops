@@ -27,7 +27,7 @@ module "enables-google-apis" {
   activate_apis = [
     "iam.googleapis.com",
     "cloudresourcemanager.googleapis.com",
-    "compute.googleapis.com",
+   # "compute.googleapis.com",
     "containerregistry.googleapis.com",
     "container.googleapis.com",
     "storage-component.googleapis.com",
