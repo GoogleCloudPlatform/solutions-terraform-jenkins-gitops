@@ -20,6 +20,7 @@
 locals {
   vpc_network_name = "example-vpc-${var.environment}"
   vm_name = "example-vm-${var.environment}-001"
+  vm_name_2 = "example-vm-${var.environment}-002"
 }
 
 /*****************************************
@@ -65,3 +66,22 @@ resource "google_compute_instance" "vm_0001" {
     }
   }
 }
+
+/*****************************************
+  Create a GCE VM Instance 2
+ *****************************************/
+#resource "google_compute_instance" "vm_0002" {
+#  project      = var.project_id
+#  zone         = var.subnet1_zone
+#  name         = local.vm_name_2
+#  machine_type = "f1-micro"
+#  network_interface {
+#    network    = module.gcp-network.network_name
+#    subnetwork = module.gcp-network.subnets_self_links[0]
+#  }
+#  boot_disk {
+#    initialize_params {
+#      image = "debian-cloud/debian-9"
+#    }
+#  }
+#}
