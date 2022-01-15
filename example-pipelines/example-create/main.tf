@@ -51,37 +51,37 @@ module "gcp-network" {
 /*****************************************
   Create a GCE VM Instance
  *****************************************/
-resource "google_compute_instance" "vm_0001" {
-  project      = var.project_id
-  zone         = var.subnet1_zone
-  name         = local.vm_name
-  machine_type = "f1-micro"
-  network_interface {
-    network    = module.gcp-network.network_name
-    subnetwork = module.gcp-network.subnets_self_links[0]
-  }
-  boot_disk {
-    initialize_params {
-      image = "debian-cloud/debian-9"
-    }
-  }
-}
+#resource "google_compute_instance" "vm_0001" {
+#  project      = var.project_id
+#  zone         = var.subnet1_zone
+#  name         = local.vm_name
+#  machine_type = "f1-micro"
+#  network_interface {
+#    network    = module.gcp-network.network_name
+#    subnetwork = module.gcp-network.subnets_self_links[0]
+#  }
+#  boot_disk {
+#    initialize_params {
+#      image = "debian-cloud/debian-9"
+#    }
+#  }
+#}
 
 /*****************************************
   Create a GCE VM Instance 2
  *****************************************/
-resource "google_compute_instance" "vm_0002" {
-  project      = var.project_id
-  zone         = var.subnet1_zone
-  name         = local.vm_name_2
-  machine_type = "f1-micro"
-  network_interface {
-    network    = module.gcp-network.network_name
-    subnetwork = module.gcp-network.subnets_self_links[0]
-  }
-  boot_disk {
-    initialize_params {
-      image = "debian-cloud/debian-9"
-    }
-  }
-}
+#resource "google_compute_instance" "vm_0002" {
+#  project      = var.project_id
+#  zone         = var.subnet1_zone
+#  name         = local.vm_name_2
+#  machine_type = "f1-micro"
+#  network_interface {
+#    network    = module.gcp-network.network_name
+#    subnetwork = module.gcp-network.subnets_self_links[0]
+#  }
+#  boot_disk {
+#    initialize_params {
+#      image = "debian-cloud/debian-9"
+#    }
+#  }
+#}
