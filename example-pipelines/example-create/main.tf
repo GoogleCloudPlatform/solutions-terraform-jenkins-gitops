@@ -72,7 +72,7 @@ resource "google_compute_instance" "vm_0001" {
 resource "google_compute_instance" "vm_0002" {
   project      = var.project_id
   zone         = var.subnet1_zone
-  name         = "vm_0002"
+  name         = "vm_0002-sicwUemadef3"
   machine_type = "f1-micro"
   network_interface {
     network    = module.gcp-network.network_name
