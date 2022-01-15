@@ -20,6 +20,7 @@
 locals {
   vpc_network_name = "example-vpc-${var.environment}"
   vm_name = "example-vm-${var.environment}-001"
+  vm_name_2 = "example-vm-${var.environment}-002"
 }
 
 /*****************************************
@@ -72,7 +73,7 @@ resource "google_compute_instance" "vm_0001" {
 resource "google_compute_instance" "vm_0002" {
   project      = var.project_id
   zone         = var.subnet1_zone
-  name         = "vm_0002-sicwUemadef3"
+  name         = local.vm_name_2
   machine_type = "f1-micro"
   network_interface {
     network    = module.gcp-network.network_name
