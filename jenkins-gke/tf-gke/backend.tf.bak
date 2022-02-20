@@ -16,7 +16,7 @@
 
 terraform {
   backend "gcs" {
-    bucket = "nucalm-devopos-tfstate"
+    bucket = "PROJECT_ID-tfstate"
     prefix = "jenkins"
   }
 }
