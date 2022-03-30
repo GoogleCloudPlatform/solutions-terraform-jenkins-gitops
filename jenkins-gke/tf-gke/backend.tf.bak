@@ -16,7 +16,7 @@
 
 terraform {
   backend "gcs" {
-    bucket = "primeval-pen-334905-tfstate"
+    bucket = "PROJECT_ID-tfstate"
     prefix = "jenkins"
   }
 }
