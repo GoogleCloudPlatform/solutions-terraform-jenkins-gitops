@@ -20,7 +20,7 @@ pipeline {
   }
   stages {
 
-
+ 
     // [START tf-apply]
     stage('Test Project') {
       steps {
