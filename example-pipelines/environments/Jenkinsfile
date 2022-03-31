@@ -112,7 +112,6 @@ pipeline {
 
     // [START tf-apply]
     stage('Test Project') {
-      when { anyOf {branch "prod";branch "dev" } }
       steps {
         container('terraform') {
           tpTestRun projectId: '3dSRL5Dq002tT6u9mFC1QQ', testId: 'mjp-mf6DG06AiOJ8e8fyqQ', agentId: 'osc2uxdFyE2zgGcn5sxD5Q', browser: 'Chrome', device: 'samsung-sm_n975w-RF8MA2SA5XR',  waitTestFinishSeconds: 180,  junitResultsFile: 'testResult.xml', executionParameters: {}
