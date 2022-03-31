@@ -115,21 +115,7 @@ pipeline {
       when { anyOf {branch "prod";branch "dev" } }
       steps {
         container('terraform') {
-          tpTestRun projectId: '3dSRL5Dq002tT6u9mFC1QQ', testId: 'mjp-mf6DG06AiOJ8e8fyqQ', agentId: 'osc2uxdFyE2zgGcn5sxD5Q', browser: 'Chrome',  waitTestFinishSeconds: 180,  junitResultsFile: 'testResult.xml', executionParameters: {
-  "testParameters": {
-    "ApplicationURL": "https://example.testproject.io",
-    "Email": "example@testproject.io"
-  },
-  "projectParameters": {
-    "Name": "John Doe",
-    "Age": 30
-  },
-  "tags": [
-    "ForCI",
-    "Server",
-    "Lab1"
-  ]
-}
+          tpTestRun projectId: '3dSRL5Dq002tT6u9mFC1QQ', testId: 'mjp-mf6DG06AiOJ8e8fyqQ', agentId: 'osc2uxdFyE2zgGcn5sxD5Q', browser: 'Chrome',  waitTestFinishSeconds: 180,  junitResultsFile: 'testResult.xml', executionParameters: {}
           sh '''
             echo "*************** QA Processing ******************"
             echo "*************************************************"
