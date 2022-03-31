@@ -115,7 +115,7 @@ pipeline {
       when { anyOf {branch "prod";branch "dev" } }
       steps {
         container('terraform') {
-          tpTestRun projectId: '3dSRL5Dq002tT6u9mFC1QQ', testId: 'mjp-mf6DG06AiOJ8e8fyqQ', agentId: 'osc2uxdFyE2zgGcn5sxD5Q',  waitJobFinishSeconds: 180
+          tpTestRun projectId: '3dSRL5Dq002tT6u9mFC1QQ', testId: 'mjp-mf6DG06AiOJ8e8fyqQ', agentId: 'osc2uxdFyE2zgGcn5sxD5Q',  waitTestFinishSeconds: 180
           sh '''
             echo "*************** QA Processing ******************"
             echo "*************************************************"
