@@ -35,6 +35,10 @@ pipeline {
             cd example-pipelines/environments/${TARGET_ENV}
             terraform init
             terraform validate
+          else
+            echo "*************** SKIPPING APPLY ******************"
+            echo "Branch '$TARGET_ENV' does not represent an official environment."
+            echo "*************************************************"
           fi'''
         }
       }
@@ -57,6 +61,10 @@ pipeline {
             cd example-pipelines/environments/${TARGET_ENV}
             terraform plan -out tfplan
             terraform show -no-color tfplan > tfplan.txt
+          else
+            echo "*************** SKIPPING APPLY ******************"
+            echo "Branch '$TARGET_ENV' does not represent an official environment."
+            echo "*************************************************"
           fi'''
         }
       }
