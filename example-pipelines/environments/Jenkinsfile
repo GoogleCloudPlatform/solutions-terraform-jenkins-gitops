@@ -35,20 +35,6 @@ pipeline {
             cd example-pipelines/environments/${TARGET_ENV}
             terraform init
             terraform validate
-          else
-            for dir in example-pipelines/environments/*/
-            do 
-              cd ${dir}
-              env=${dir%*/}
-              env=${env#*/}
-              echo ""
-              echo "*************** TERRAFOM INIT and VALIDATE ******************"
-              echo "******* At environment: ${env} ********"
-              echo "*************************************************"
-              terraform init || exit 1
-              terraform validate || exit 1
-              cd ../../../
-            done
           fi'''
         }
       }
@@ -69,25 +55,24 @@ pipeline {
          
           if [ -d "example-pipelines/environments/${TARGET_ENV}/" ]; then
             cd example-pipelines/environments/${TARGET_ENV}
-            terraform plan
-          else
-            for dir in example-pipelines/environments/*/
-            do 
-              cd ${dir}
-              env=${dir%*/}
-              env=${env#*/}
-              echo ""
-              echo "*************** TERRAFOM PLAN ******************"
-              echo "******* At environment: ${env} ********"
-              echo "*************************************************"
-              terraform plan || exit 1
-              cd ../../../
-            done
+            terraform plan -out tfplan
+            terraform show -no-color tfplan > tfplan.txt
           fi'''
         }
       }
     }
     // [END tf-plan]
+    
+    stage('Approval') {
+      when { anyOf {branch "prod";branch "dev";changeRequest() } }
+      steps {
+          script {
+              def plan = readFile 'tfplan.txt'
+              input message: "Do you want to apply the plan?",
+                  parameters: [text(name: 'Plan', description: 'Please review the plan', defaultValue: plan)]
+          }
+      }
+    }
 
     // [START tf-apply]
     stage('TF Apply') {
