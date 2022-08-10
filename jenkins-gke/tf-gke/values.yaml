@@ -13,7 +13,7 @@
 # limitations under the License.
 
 master:
-  tag: "2.243"
+  tag: "2.300"
   containerEnv:
     - name: PROJECT_ID
       valueFrom:
@@ -43,19 +43,114 @@ master:
   servicePort: 80
   serviceType: LoadBalancer
   installPlugins:
-    - kubernetes:1.26.2
-    - workflow-job:2.39
-    - workflow-aggregator:2.6
-    - credentials-binding:1.23
-    - git:4.3.0
-    - blueocean:1.23.2
-    - docker-custom-build-environment:1.7.3
-    - credentials:2.3.11
-    - docker-commons:1.17
-    - docker-workflow:1.23
-    - job-dsl:1.77
-    - configuration-as-code:1.41
-    - jdk-tool:1.4
+      - blueocean-dashboard:1.24.7
+      - checks-api:1.7.0
+      - pipeline-stage-view:2.19
+      - ssh-credentials:1.19
+      - popper2-api:2.5.4-2
+      - structs:1.23
+      - blueocean-core-js:1.24.7
+      - momentjs:1.1.1
+      - blueocean-personalization:1.24.7
+      - sshd:3.0.3
+      - git-client:3.7.2
+      - workflow-durable-task-step:2.39
+      - workflow-cps-global-lib:2.21
+      - popper-api:1.16.1-2
+      - workflow-basic-steps:2.23
+      - pipeline-graph-analysis:1.11
+      - blueocean-pipeline-editor:1.24.7
+      - workflow-aggregator:2.6
+      - plain-credentials:1.7
+      - kubernetes-credentials:0.9.0
+      - favorite:2.3.3
+      - blueocean-i18n:1.24.7
+      - workflow-support:3.8
+      - github:1.33.1
+      - configuration-as-code:1.51
+      - display-url-api:2.3.5
+      - blueocean-config:1.24.7
+      - jenkins-design-language:1.24.7
+      - bootstrap4-api:4.6.0-3
+      - bouncycastle-api:2.20
+      - durable-task:1.37
+      - blueocean-git-pipeline:1.24.7
+      - font-awesome-api:5.15.3-3
+      - caffeine-api:2.9.1-23.v51c4e2c879c8
+      - jackson2-api:2.12.3
+      - htmlpublisher:1.25
+      - workflow-api:2.46
+      - pipeline-stage-step:2.5
+      - git:4.7.2
+      - workflow-job:2.41
+      - blueocean-pipeline-scm-api:1.24.7
+      - pipeline-stage-tags-metadata:1.8.5
+      - jira:3.5
+      - matrix-project:1.19
+      - jsch:0.1.55.2
+      - lockable-resources:2.11
+      - variant:1.4
+      - git-server:1.9
+      - cloudbees-bitbucket-branch-source:2.9.9
+      - trilead-api:1.0.13
+      - scm-api:2.6.4
+      - docker-workflow:1.26
+      - pubsub-light:1.16
+      - jdk-tool:1.4
+      - branch-api:2.6.4
+      - plugin-util-api:2.3.0
+      - authentication-tokens:1.4
+      - handlebars:3.0.8
+      - pipeline-model-extensions:1.8.5
+      - token-macro:2.15
+      - pipeline-rest-api:2.19
+      - blueocean-display-url:2.4.1
+      - jjwt-api:0.11.2-9.c8b45b8bb173
+      - mailer:1.34
+      - blueocean-autofavorite:1.2.4
+      - blueocean-commons:1.24.7
+      - blueocean:1.24.7
+      - command-launcher:1.6
+      - blueocean-rest:1.24.7
+      - kubernetes:1.30.0
+      - apache-httpcomponents-client-4-api:4.5.13-1.0
+      - cloudbees-folder:6.15
+      - job-dsl:1.77
+      - blueocean-bitbucket-pipeline:1.24.7
+      - docker-commons:1.17
+      - bootstrap5-api:5.0.1-2
+      - blueocean-jira:1.24.7
+      - pipeline-milestone-step:1.3.2
+      - blueocean-pipeline-api-impl:1.24.7
+      - blueocean-github-pipeline:1.24.7
+      - pipeline-model-api:1.8.5
+      - pipeline-model-definition:1.8.5
+      - echarts-api:5.1.2-2
+      - docker-custom-build-environment:1.7.3
+      - handy-uri-templates-2-api:2.1.8-1.0
+      - kubernetes-client-api:5.4.1
+      - github-branch-source:2.11.1
+      - blueocean-jwt:1.24.7
+      - pipeline-input-step:2.12
+      - github-api:1.123
+      - junit:1.51
+      - credentials-binding:1.26
+      - workflow-scm-step:2.13
+      - pipeline-build-step:2.13
+      - ace-editor:1.1
+      - blueocean-web:1.24.7
+      - workflow-step-api:2.23
+      - sse-gateway:1.24
+      - credentials:2.5
+      - okhttp-api:3.14.9
+      - snakeyaml-api:1.29.1
+      - blueocean-rest-impl:1.24.7
+      - metrics:4.0.2.8
+      - blueocean-events:1.24.7
+      - workflow-cps:2.92
+      - jquery3-api:3.6.0-1
+      - script-security:1.77
+      - workflow-multibranch:2.26
   JCasC:
     enabled: true
     configScripts:
@@ -100,7 +195,7 @@ master:
                               label: "terraform-exec"
                               containers:
                                 - name: "terraform"
-                                  image: "hashicorp/terraform:light"
+                                  image: "hashicorp/terraform:0.12.29"
                                   alwaysPullImage: false
                                   workingDir: "/home/jenkins/agent"
                                   ttyEnabled: true
